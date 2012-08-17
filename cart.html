@@ -1,0 +1,215 @@
+<!--/
+    CartChing Theme / Metro Extend
+    Copyright (c) CartChing, 2012 | http://cartching.com
+/-->
+
+<!-- #EXTENDS file="theme.html" -->
+
+<!-- #BLOCK for="page_title" -->Shop &mdash; {{store | html_encode}}<!-- #ENDBLOCK -->
+<!-- #BLOCK for="head_content" -->
+<meta name="robots" content="noindex, nofollow" />
+<!-- #ENDBLOCK -->
+
+
+
+        <span class="amount">/ <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{cart.totalprice | money_dollars}}</span><!-- #IF {{cart.totalprice | money_cents}} --><span class="cents">.{{cart.totalprice | money_cents}}</span><!-- #ENDIF --></span>
+
+
+
+<!-- #BLOCK for="content_title" -->
+
+<header role="page">
+    <!-- #IF {{cart.items}} -->
+
+		<h1>Your Cart</h1>
+         
+        <ol class="progress checkout">
+            <li id="progress-cart" class="active">Your Cart <span>→</span></li>
+            <li id="progress-checkout"><a href="/checkout/" title="Shipping Details">Shipping</a> <span>→</span></li>
+            <li id="progress-payment"><a href="/payment/" title="Payment Details">Payment</a> <span>→</span></li>
+            <li id="progress-receipt"><span title="Receipt">Receipt</span></li>
+        </ol>
+
+    <!-- #ELSE -->
+
+        <h4>Doh!</h4>
+        <h1>Your Cart is empty!</h1>
+
+    <!-- #ENDIF -->
+	</header>
+
+<!-- #ENDBLOCK -->
+
+<!-- #BLOCK for="content_area" -->
+
+	
+<!-- #IF {{cart.items}} -->
+
+      <form action="/cart/update" method="post" class="form">
+      <table class="cartitems">
+                <thead>
+                    <tr>
+                        <th class="details">Item</th>
+                        <th class="price">Price</th>
+                        <th class="qty">Qty</th>
+                        <th colspan="2" class="money">Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!-- #FOREACH {{cartitem in cart.items}} --> 
+                    <tr>
+                        <td class="details">
+                          <!-- #IF {{cartitem.image}} --><img src="{{cartitem.image}}?w=90&h=80&crop=false" alt="{{cartitem.name | html_encode}}" class="product-image" /><!-- #ENDIF -->
+                          <p><a href="{{cartitem.url}}">{{cartitem.name | html_encode}}</a> <!-- #IF {{cartitem.hasvariation}} --><br />{{cartitem.variation.name | html_encode}}<!-- #ENDIF --></p>            
+                        </td>
+                        <td class="price">{{cartitem.price | money}}</td>
+                        <td class="qty">
+                            <input class="qty text number" type="number" maxlength="3" length="3" size="3" name="quantity" value="{{cartitem.quantity}}" onfocus="this.select();" />
+                            <input type="hidden" name="cartitem" value="{{cartitem.id}}" />
+                            <button type="button" name="cartitem" value="{{cartitem.id}}"  class="button remove" title="Remove - {{cartitem.name | html_encode}}">Remove</button>
+                        </td>
+                        <td colspan="2" class="money">{{cartitem.qtyprice | money}}</td>
+                    </tr>
+                    <!-- #NEXT -->
+                </tbody>
+
+                <tfoot>
+                
+                    <tr class="update">
+                        <td colspan="5" class="coupon">
+                        
+                            <fieldset>
+                                <legend>Discount Coupon</legend>
+                                <ul>
+                                    <li>
+                                        <label>Coupon Code</label>
+                                        <input type="text" name="coupon" value="" maxlength="20" class="text" title="Coupon Code" />
+                                    </li>
+                                    <li class="submit"><button type="submit" class="button updatecart" title="Get your Discount">Apply</button></li>
+                                </ul>
+                            </fieldset>
+
+ 						
+                        <!--                       
+                        <button type="submit" value="Update"  class="button update" title="Update">Update</button>
+                        -->
+                                                
+                        </td>
+                    </tr>
+
+                    <tr class="subtotal">
+                      <td colspan="4"><strong>Subtotal</strong> <!-- #IF {{cart.taxesincluded}} -->(incl. tax)</strong><!-- #ELSE --><strong>(ex. tax)<!-- #ENDIF --></td>
+                      <td class="money">{{cart.subtotal | money}}</td>
+                    </tr>
+
+                    <!-- #IF {{cart.shippingrequired}} -->
+                    <!-- #IF {{cart.shippingaddress.country}} -->
+                    <!-- // show carrier and pricing -->
+
+                    <tr class="shipping">
+                      <td colspan="4"><small>Shipping with <strong>{{cart.shipping.carrier}}</strong>.</small> | Shipping/Handling</td>
+                      <td class="money">{{cart.shipping.cost | money}}</td>
+                    </tr>
+
+                    <!-- #ELSE -->
+                    <!-- // no shipping required -->
+
+                    <tr class="shipping">
+                      <td colspan="4"><small>Delivery - No Shipping Required.</small></td>
+                      <td class="money"></td>
+                    </tr>
+
+                    <!-- #ENDIF -->
+                    <!-- #ELSE -->
+                    <!-- #IF {{cart.shippingaddress.country | not}} -->
+
+                    <tr class="shipping">
+                      <td colspan="4"><small>Shipping to be added.</small></td>
+                      <td class="money"></td>
+                    </tr>
+
+                    <!-- #ENDIF -->
+                    <!-- #ENDIF -->                                        
+
+                    <!-- #IF {{cart.coupon}} -->
+                    <tr class="discount">
+                      <td colspan="4"><em>{{cart.coupon.name}}</em> | Discount <strong>({{cart.discount.percentage}}%)</strong></td>
+                      <td class="money">{{cart.discount.amount | money}}</td>
+                    </tr>
+                    <!-- #ENDIF -->
+
+                    <tr class="total">
+                      <td colspan="4"><strong>Total</strong> <abbr class="currency" title="{{store.currency_name}}">{{store.currency}}</abbr></td>
+                      <td class="money">{{cart.totalprice | money}}</td>
+                    </tr>
+
+                    <!-- #IF {{cart.taxesincluded}} -->
+                    <tr class="tax">
+                      <td colspan="4">Includes Tax ({{cart.tax.percentage}}%)</td>
+                      <td class="money">{{cart.tax.amount | money}}</td>
+                    </tr>
+                    <!-- #ENDIF -->
+
+                    
+                </tfoot>
+            </table>
+            <!-- /#product-cartitems -->
+
+
+
+
+			<section class="actions cart">
+				<ul>
+				  <li class="list-continue"><a href="/shop/" class="continue-shopping">&#8249; Continue Shopping</a></li>
+            	  <li class="list-update"><button type="submit" value="Update"  class="button update" title="Update">Update</button></li>
+           		  <li class="list-checkout"><a href="/checkout/" class="checkout">Checkout &raquo;</a></li>
+                </ul>
+			</section>
+
+            
+</form>
+
+
+    <!-- #ELSE -->
+
+        <h3><a href="/shop/">Continue shopping</a> or <a href="/contact/">contact us</a> for more information.</h3>
+        
+        <p><strong>Hint:</strong> If you see something you would like to add to your shopping cart when shopping, click the <strong>ADD TO CART</strong> button.</p>
+
+    <!-- #ENDIF -->
+
+
+<!-- #ENDBLOCK -->
+
+
+<!-- #BLOCK for="aside_area" --> <!-- #ENDBLOCK -->
+
+
+<!-- #BLOCK for="footer_social" --> <!-- #ENDBLOCK -->
+
+
+<!-- #BLOCK for="script_content" -->
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js?ver=3.1.3'></script>
+<script>
+	$(document).ready(function(){
+	
+		// add the remove crt item form to the body
+		var $form = $('<form action="/cart/update" style="display:none" method="post"><input id="removecartitem" name="cartitem" type="hidden" value="" /><input name="quantity" type="hidden" value="0" /></form>');
+		$('body').append($form);
+	
+		$('button.button.remove')
+			.show() // make the remove buttons visible, since we have javascript
+			.click(function(){
+				var $button = $(this);
+				$('#removecartitem', $form).val($button.val());
+				
+				var msg = $button.attr('title') || "You're about to remove this item!";
+
+				if (confirm(msg))
+					$form.submit();
+			});
+	});
+
+</script>
+<!-- #ENDBLOCK -->

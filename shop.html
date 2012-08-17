@@ -1,0 +1,280 @@
+<!--/
+    CartChing Theme / Metro Extend
+    Copyright (c) CartChing, 2012 | http://cartching.com
+/-->
+
+<!-- #EXTENDS file="theme.html" -->
+
+<!-- #BLOCK for="page_title" -->Shop &mdash; {{store | html_encode}}<!-- #ENDBLOCK -->
+<!-- #BLOCK for="head_content" --><!-- #ENDBLOCK -->
+
+<!-- #BLOCK for="content_title" --> <!-- #ENDBLOCK -->
+
+<!-- #BLOCK for="content_area" -->
+
+
+
+   
+   <!-- #IF {{snippets.banner}} -->
+   
+      <!-- #IF {{store.loggedin}} -->
+      <div class="snippet-edit snippet">
+          <h3>Snippet!</h3>
+          <p><em><a href="/admin/snippets/">Edit Snippet</a></em> [<strong>Banner</strong>]</p>
+      </div>
+      <!-- #ENDIF -->
+   
+      <div class="banner carousel">
+      	<div id="banner">
+	          {{snippets.banner}}
+         </div>
+         <div class="clear"></div>
+         <div class="slides-paging banner-paging" id="banner-paging"></div>
+      </div>
+
+   
+   <!-- #ELSE -->
+   
+      <!-- #IF {{store.loggedin}} -->
+      <div class="snippet-add snippet">
+         <h3>Add Snippet!</h3>
+         <p><em><a href="/admin/snippet/new?title=Banner">Create Snippet</a></em>: <strong>Banner</strong>. <em>Note - Image must be 960px wide.</em></p>
+      </div>            
+     <!-- #ENDIF -->
+     
+   <!-- #ENDIF -->
+   
+   
+
+
+
+    <!-- #IF {{products.featured}} -->
+
+       <section class="products group featured carousel">
+   
+           <div id="slides">
+              
+               <!-- #FOREACH {{ product in products.featured | shuffle | pick(16) }} -->
+               <article class="hproduct product slide {{product.slug}}">
+       
+                   <div class="inner">
+                   
+                       <!-- #IF {{product.image}} -->
+                       <figure><a href="{{product.url}}" rel="product"><img src="{{product.image}}?w=240&h=300&crop=true" alt="{{product.excerpt | html_encode}}" class="photo" /></a></figure>
+                       <!-- #ENDIF -->
+        
+                       <section class="product-details">
+      
+                          <h1 class="product-title"><a href="{{product.url}}">{{product.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{product.editurl}}">(Edit)</a><!-- #ENDIF --></h1>
+                          <p class="price">
+                               <!-- #IF {{product.onsale}} -->
+                               <del><span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.fullprice | money_dollars}}</span><!-- #IF {{product.fullprice | money_cents}} --><span class="cents">.{{product.fullprice | money_cents}}</span><!-- #ENDIF --></del>
+                               <!-- #ENDIF -->
+                               <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.price | money_dollars}}</span><!-- #IF {{product.price | money_cents}} --><span class="cents">.{{product.price | money_cents}}</span><!-- #ENDIF -->
+                          </p> 
+                       
+                       </section>        
+      
+                  </div>
+                   
+               </article>
+               <!-- #NEXT -->
+      
+            </div>
+   
+            <div class="clear"></div>
+            <a class="slide-prev" href="#">&lt;</a>
+            <a class="slide-next" href="#">&gt;</a>
+            <div class="slides-paging" id="slides-paging"></div>
+   
+            <hr />
+   
+      </section>
+
+	<!-- #ENDIF -->
+   
+
+
+
+
+	<div class="hasaside">
+   
+   
+		<div class="main">
+
+         <!-- #IF {{products.all}} -->
+   
+            <section class="products products-shuffle masonry group">
+            
+               <!-- #FOREACH {{ product in products.all | shuffle | pick(8) }} -->
+               <article class="hproduct product box {{product.slug}}">
+         
+                   <div class="inner">
+                   
+                       <!-- #IF {{product.image}} -->
+                       <figure>
+                           <a href="{{product.url}}" rel="product"><img src="{{product.image}}?w=600&h=440&crop=true" alt="{{product.excerpt | html_encode}}" class="photo" /></a>
+                       </figure>
+                       <!-- #ENDIF -->
+                               
+                       <section class="product-details">
+         
+                           <h1 class="product-title"><a href="{{product.url}}">{{product.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{product.editurl}}">(Edit)</a><!-- #ENDIF --></h1>
+                           <p class="price">
+                               <!-- #IF {{product.onsale}} -->
+                               <del><span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.fullprice | money_dollars}}</span><!-- #IF {{product.fullprice | money_cents}} --><span class="cents">.{{product.fullprice | money_cents}}</span><!-- #ENDIF --></del>
+                               <!-- #ENDIF -->
+                               <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.price | money_dollars}}</span><!-- #IF {{product.price | money_cents}} --><span class="cents">.{{product.price | money_cents}}</span><!-- #ENDIF -->
+                           </p>
+               
+                       </section>
+         
+                  </div>
+                   
+               </article>
+               <!-- #NEXT -->
+         
+            </section>
+      
+         <!-- #ENDIF -->
+
+		</div><!-- END | main -->
+
+
+		<aside class="aside">
+
+         <!-- #include file="aside.include.html" -->
+      
+      </aside>
+
+   
+   </div><!-- END | hasaside -->
+	
+
+
+<!-- #ENDBLOCK -->
+
+
+
+
+
+
+
+
+
+
+
+<!-- #BLOCK for="script_content" -->
+
+   <!-- #IF {{products.all}} -->
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="/themes/library/jquery/caroufredsel/carouFredSel.css" media="screen">
+      
+      <!-- SCRIPTS -->
+      <script src="http://static.store-cdn.com/themes/library/jquery/caroufredsel/jquery.carouFredSel-5.6.2.js"></script>
+      <script>
+      
+			// Caroulsel
+			$("#slides").carouFredSel({
+				responsive  : true,
+				
+				auto : {
+					play : false
+				},
+			
+				items       : {
+					width       : 240,
+					visible     : {
+						min         : 1,
+						max         : 4
+					},
+					height: "variable"
+				},
+			
+				next: {
+					button: "a.slide-next",
+					key: "right"
+				},
+			
+				prev: {
+					button: "a.slide-prev",
+					key: "left"
+				},
+			
+				pagination  : "#slides-paging"
+			
+			});
+      
+      </script>
+      
+      <script src="/themes/library/jquery/masonry/jquery.masonry.min.js"></script>
+      <script>
+      
+			$(document).ready(function(){
+				 var $container = $('.masonry');
+			
+				 var gutter = 20;
+				 var min_width = 200;
+				 $container.imagesLoaded( function(){
+					  $container.masonry({
+							itemSelector : '.box',
+							gutterWidth: gutter,
+							isAnimated: true,
+							  columnWidth: function( containerWidth ) {
+								 var box_width = (((containerWidth - 2*gutter)/3) | 0) ;
+			
+								 if (box_width < min_width) {
+									  box_width = (((containerWidth - gutter)/2) | 0);
+								 }
+			
+								 if (box_width < min_width) {
+									  box_width = containerWidth;
+								 }
+			
+								 $('.box').width(box_width);
+			
+								 return box_width;
+							  }
+					  });
+				 });
+			});
+      
+      </script>
+   
+   <!-- #ENDIF -->
+   
+   
+
+	<!-- #IF {{snippets.banner}} -->
+ 
+       <script>
+      
+			// Caroulsel
+			$("#banner").carouFredSel({
+				responsive  : true,
+				
+				auto : {
+					play : true
+				},
+			
+				items       : {
+					width       : 960,
+					visible     : {
+						min         : 1,
+						max         : 1
+					},
+					height: "variable"
+				},
+						
+				pagination  : "#banner-paging"
+			
+			});
+
+      </script>
+  
+   
+   <!-- #ENDIF -->
+
+
+<!-- #ENDBLOCK -->

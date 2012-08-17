@@ -1,0 +1,67 @@
+<!-- #BLOCK for="aside_area" -->
+
+   <!-- #IF {{products.all}} -->
+
+      <aside class="aside">
+      
+         <div class="wrap">
+      
+
+            <div class="feed feed-alpha">
+            
+               <h2>Shop</h2>
+            
+               <!-- #IF {{categories.all}} -->
+               <ul class="categories">
+               <!-- #FOREACH {{navcategory in categories.all }} -->
+               
+               <!-- #IF {{navcategory.featured | not}} -->
+               <!-- #ENDIF -->
+               
+                       <!-- #IF {{navcategory.subcategories}} -->
+                   
+                       <li id="subnavcategory-{{navcategory.slug}}" class="subnavcategory">          
+                         <h4><a title="{{navcategory.name | html_encode}}" href="{{navcategory.url}}">{{navcategory.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{navcategory.editurl}}">(Edit)</a><!-- #ENDIF --></h4>
+                         <ul>
+                         <!-- #FOREACH {{subnavcategory in navcategory.subcategories}} -->
+                           <li id="subnavcategory-{{subnavcategory.slug}}"><a title="{{subnavcategory.name | html_encode}}" href="{{subnavcategory.url}}">{{subnavcategory.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{navcategory.editurl}}">(Edit)</a><!-- #ENDIF --></li>
+                         <!-- #NEXT -->
+                         </ul>
+                       </li>         
+                   
+                       <!-- #ELSE -->
+                   
+                           <!-- #IF {{categories.featured}} -->
+               
+                           <li id="navcategory-{{navcategory.slug}}" class="navcategory featured"><a title="{{navcategory.name | html_encode}}" href="{{navcategory.url}}">{{navcategory.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{navcategory.editurl}}">(Edit)</a><!-- #ENDIF --></li>
+                           
+                           <!-- #ELSE -->
+                           
+                           <li id="navcategory-{{navcategory.slug}}" class="navcategory"><a title="{{navcategory.name | html_encode}}" href="{{navcategory.url}}">{{navcategory.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{navcategory.editurl}}">(Edit)</a><!-- #ENDIF --></li>
+               
+                           <!-- #ENDIF -->
+               
+                       <!-- #ENDIF -->
+               
+               <!-- #NEXT -->
+               </ul>
+               <!-- #ENDIF -->
+                   
+            </div>
+   
+   
+            <div class="feed feed-omega">
+               <h2>Cart</h2>
+               <ul>
+                  <li class="cart"><a href="/cart/" rel="nofollow">Your Cart <!-- #IF {{cart.items.count}} -->{{cart.totalprice | money}} ({{cart.items.count}} items)<!-- #ELSE -->(0)<!-- #ENDIF --></a></li>
+               </ul>
+            </div>
+
+			
+        </div><!-- END | wrap -->
+    
+      </aside>
+
+   <!-- #ENDIF -->
+
+<!-- #ENDBLOCK -->

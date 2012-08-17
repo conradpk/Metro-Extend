@@ -1,0 +1,149 @@
+<!-- #IF {{cart.items.count}} -->
+
+   <section class="cart">
+
+      <h3><a href="/cart/" rel="nofollow">Cart</a></h3>
+      <ul class="cart">
+         <li class="items"><em>{{cart.items.count}} item/s</em></li>
+         <li class="total"><strong>Total </strong>: {{cart.totalprice | money}} <abbr class="currency" title="{{store.currency_name}}">{{store.currency}}</abbr></li>
+      </ul>
+
+   </section>
+
+<!-- #ENDIF -->
+
+
+
+
+
+
+<!-- #IF {{categories.all}} -->
+
+   <section class="categories">
+
+      <h3>Shop</h3>
+
+      <ul class="categories">
+      <!-- #FOREACH {{navcategory in categories.all }} -->
+      
+         <!-- #IF {{navcategory.featured | not}} --><!-- #ENDIF -->
+         
+         <!-- #IF {{navcategory.subcategories}} -->
+         
+            <li id="subnavcategory-{{navcategory.slug}}" class="subnavcategory">
+             <h4><a title="{{navcategory.name | html_encode}}" href="{{navcategory.url}}">{{navcategory.name | html_encode}}</a></h4>
+             <ul>
+             <!-- #FOREACH {{subnavcategory in navcategory.subcategories}} -->
+               <li id="subnavcategory-{{subnavcategory.slug}}"><a title="{{subnavcategory.name | html_encode}}" href="{{subnavcategory.url}}">{{subnavcategory.name | html_encode}}</a></li>
+             <!-- #NEXT -->
+             </ul>
+            </li>
+         
+         <!-- #ELSE -->
+         
+            <!-- #IF {{categories.featured}} -->
+         
+            <li id="navcategory-{{navcategory.slug}}" class="navcategory featured"><a title="{{navcategory.name | html_encode}}" href="{{navcategory.url}}">{{navcategory.name | html_encode}}</a></li>
+            
+            <!-- #ELSE -->
+            
+            <li id="navcategory-{{navcategory.slug}}" class="navcategory"><a title="{{navcategory.name | html_encode}}" href="{{navcategory.url}}">{{navcategory.name | html_encode}}</a></li>
+         
+            <!-- #ENDIF -->
+         
+         <!-- #ENDIF -->
+            
+      <!-- #NEXT -->
+      </ul>
+
+   
+</section>
+
+<!-- #ENDIF -->
+
+
+
+
+
+
+<!-- #IF {{blog}} -->
+
+<section class="blog-feed thumbnail">
+
+   <h3 title="Latest Posts">Latest Posts</h3>
+   <ul>
+       <!-- #FOREACH {{post in blogs.all | pick(5) }} -->
+       <li class="post {{post.slug}}">
+
+           <!-- #IF {{store.loggedin}} --><a class="store-edit" alt="Edit This" href="{{post.editurl}}">(Edit)</a><!-- #ENDIF -->
+
+           <a href="{{post.url}}" title="{{post.title | html_encode}}">
+           <!-- #IF {{post.image}} --><span class="post-image"><img src="{{post.image}}?w=60&h=40&crop=true" alt="{{post.title | html_encode}}" /></span><!-- #ENDIF -->
+           <h4 class="entry-title">{{post.title | html_encode}}</h4>
+           </a>
+
+       </li>
+       <!-- #NEXT -->
+      <li class="readmore"><a href="/blog/">Read more...</a></li>
+  </ul>
+
+</section>
+
+<!-- #ENDIF -->
+
+
+
+
+
+<!-- #IF {{snippets.aside-social}} -->
+
+   <!-- #IF {{store.loggedin}} -->
+   <div class="snippet-edit snippet">
+       <h3>Snippet!</h3>
+       <p><em><a href="/admin/snippets/">Edit Snippet</a></em> [<strong>Aside Social</strong>]</p>
+   </div>
+   <!-- #ENDIF -->
+   
+   <section class="social">
+       {{snippets.aside-social}}
+   </section>
+   
+   
+   <!-- #ELSE -->
+   
+   <!-- #IF {{store.loggedin}} -->
+   <div class="snippet-add snippet">
+       <h3>Add Snippet!</h3>
+      <p><em><a href="/admin/snippet/new?title=Aside%20Social">Create Snippet</a></em>: <strong>Aside Social</strong>.</p>
+   </div>
+   <!-- #ENDIF -->
+
+<!-- #ENDIF -->
+
+
+
+
+<!-- #IF {{snippets.aside}} -->
+
+   <!-- #IF {{store.loggedin}} -->
+   <div class="snippet-edit snippet">
+       <h3>Snippet!</h3>
+       <p><em><a href="/admin/snippets/">Edit Snippet</a></em> [<strong>Aside</strong>]</p>
+	</div>
+   <!-- #ENDIF -->
+
+   <section class="snippets-aside">
+       {{snippets.aside}}
+       <div class="clearfix"></div>
+   </section>
+
+<!-- #ELSE -->
+
+   <!-- #IF {{store.loggedin}} -->
+   <div class="snippet-add snippet">
+      <h3>Snippet!</h3>
+      <p><em><a href="/admin/snippet/new?title=Aside">Create Snippet</a></em> <strong>[Aside]</strong></p>
+      </div>
+   <!-- #ENDIF -->
+        
+<!-- #ENDIF -->

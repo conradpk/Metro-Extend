@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--/
+    Theme Name: Metro Extend
+    Version: v1.0
+    Theme URI: http://cartching.com
+    Description: CMS, Store, Blog
+    Copyright (c) CartChing, 2012 | http://cartching.com
+
+    Author: Conrad Petzsch-Kunze
+    Author URI: http://conradpk.com
+/-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title><!-- #BLOCK name="page_title" -->{{page.title | html_encode}}<!-- #ENDBLOCK --></title>
+
+<!-- meta -->
+<!-- #BLOCK name="page_keywords" --><!-- #IF {{page.keywords}} --><meta name="keywords" content="{{page.keywords | html_encode}}"><!-- #ENDIF --><!-- #ENDBLOCK --> 
+<!-- #BLOCK name="page_description" -->
+<!-- #IF {{page.description}} -->
+<!-- #var {{ pagedescription = page.description | strip_html | html_encode }} -->
+<meta name="description" content="{{pagedescription}}">
+<meta property="og:description" content="{{pagedescription}}">
+<!-- #ENDIF -->
+<!-- #ENDBLOCK -->
+
+<link rel="canonical" href="{{page.url}}">
+<link rel="home" title="home" href="{{store.url}}">
+<link rel="alternate" type="application/rss+xml" title="{{store | html_encode}}'s Blog" href="{{store.url}}/blog.rss">
+<!-- #BLOCK name="page_type" --><meta property="og:type" content="product"><!-- #ENDBLOCK -->
+<!-- #BLOCK name="page_image" --><!-- #ENDBLOCK -->
+
+<!-- styles -->
+<link rel="stylesheet" href="/themes/metro-extend/files/theme.css" media="screen">
+<link rel="stylesheet" href="/files/custom.css" media="screen">
+
+<!-- scripts -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<!-- #IF {{store.loggedin}} -->
+<script src="/themes/library/store-tools/store-ui.js"></script>
+<link rel="stylesheet" media="all" href="/themes/library/store-tools/store-ui.css">
+<!-- #ENDIF -->
+
+<!-- #BLOCK name="head_content" --><!-- #ENDBLOCK -->
+<!-- #IF {{snippets.head-content}} -->{{snippets.head-content}}<!-- #ENDIF -->
+
+</head>
+
+<body id="{{page.id}}" class="{{page.template}}">
+
+
+<!-- #IF {{page.hasmessage}} -->
+<section role="pagemsg" class="modal pagemsg" id="pagemsg">
+
+    <div class="msg {{page.messagetype|lowercase}}">        	
+        <div class="details">
+        <!-- #IF {{page.hasmessagetitle}} --><h3>{{page.messagetitle}}</h3><!-- #ENDIF -->
+        <!-- #IF {{page.hasmessagedetails}} --><p>{{page.messagedetails}}</p><!-- #ENDIF -->
+        </div>
+		<a href="#close" class="close" onClick="$('#pagemsg').fadeOut();" title="Click to Close" rel="nofollow">Close</a>
+    </div>
+
+</section>
+<!-- #ENDIF -->
+
+
+
+
+
+
+<header role="masthead" class="masthead">
+    <div class="wrap"> <!-- inner_no_overflow -->
+
+         <h1 class="logo" title="{{store.name | html_encode}}"><a href="{{store.url}}">{{store.name | html_encode}}</a></h1>
+
+			<!-- #IF {{products.all}} -->
+         <nav class="top-bar nav-cart">
+            <ul>
+                <!-- #IF {{cart.items.count}} -->
+                <li class="nav-checkout"><a href="/checkout/">Checkout</a></li>
+                <li class="nav-viewcart last"><a href="/cart/" class="viewcart" title="{{store.currency_sign}}{{cart.totalprice | money_dollars}} ({{cart.items.count}} items)">Cart ({{cart.items.count}})</a></li>
+                <!-- #ELSE -->
+                <li class="nav-emptycart"><strong>Cart</strong> <em>(Empty)</em></li>
+                <!-- #ENDIF -->
+                
+            </ul>
+         </nav>
+         <!-- #ENDIF -->
+        
+        <nav role="nav" class="nav">
+            <ul>
+					<!-- #IF {{ links.nav }} -->
+
+                   <!-- #FOREACH {{link in links.nav}} -->
+                   <li class="nav-{{link.slug}}"><a href="{{link.url}}" title="{{link.name | html_encode}}">{{link.name | html_encode}}</a></li>
+                   <!-- #NEXT -->
+
+               <!-- #ELSE -->
+               
+						 <li class="nav-home"><a href="/" title="Home">Home</a></li>
+						 <li class="nav-contact"><a href="/contact/" title="Contact">Contact</a></li>
+                                    
+               <!-- #ENDIF -->
+
+            </ul>
+        </nav>
+
+    </div>
+</header>
+
+
+<section role="content">
+	<div class="wrap">
+
+
+         <!-- #IF {{store.loggedin}} -->
+         
+            <section class="admin-helper">
+   
+               <!-- #IF {{products.all}} -->
+               <!-- #ELSE -->
+                  <div class="helper new-product">
+                     <p>Looks like you haven't added any products yet! <a href="/admin/product/new">Add a Product</a></p>
+                  </div>
+               <!-- #ENDIF -->
+
+					<!-- #IF {{categories.all}} -->      
+               <!-- #ELSE -->
+                  <div class="helper new-product-category">
+                     <p>Categorise your Products! <a href="/admin/category/new">Add a Category</a></p>
+                  </div>
+               <!-- #ENDIF -->
+   
+               <!-- #IF {{blog}} -->
+               <!-- #ELSE -->
+                  <div class="helper new-product-post">
+                     <p>Thought about adding a Blog to your website? <a href="/admin/post/new">Add a Blog Post</a></p>
+                  </div>
+               <!-- #ENDIF -->
+                  
+            </section>
+            
+         <!-- #ENDIF -->
+
+         
+         <!-- #BLOCK name="content_title" -->
+         <header role="page-title">
+	         <h1 title="{{page.title | html_encode}}">{{page.title | html_encode}}</h1>
+         </header>
+         <!-- #ENDBLOCK -->
+         
+         <!-- CONTENT -->
+         <!-- #BLOCK name="content_area" --><!-- #ENDBLOCK -->         
+
+    </div>
+</section>
+
+
+
+
+<!-- #BLOCK name="footer-widgets_area" -->
+<section class="footer-widgets">
+
+   <div class="wrap">
+
+      
+      <!-- #IF {{blog}} -->
+      <!-- #ENDIF -->
+
+      <section class="feed blog-feed thumbnail recent">
+      
+         <h2 title="Recent posts">Recent</h2>
+         
+         <ul>
+             <!-- #FOREACH{{ allblogpost in blogs.all.articles | pick(5) }} -->
+             <li class="post {{allblogpost.slug}}">
+      
+                 <a href="{{allblogpost.url}}" title="{{allblogpost.title | html_encode}}">
+                 <!-- #IF {{allblogpost.image}} --><span class="post-image"><img src="{{allblogpost.image}}?w=60&h=40&crop=true" alt="{{allblogpost.title | html_encode}}" /></span><!-- #ENDIF -->
+                 <h4 class="entry-title">{{allblogpost.title | html_encode}}</h4>
+                 </a>
+   
+             </li>
+             <!-- #NEXT -->
+            <li class="readmore"><a href="/blog/">Read more...</a></li>
+        </ul>
+   
+      </section>
+      
+      
+    
+		
+      <!-- #IF {{products.featured}} -->
+      <section class="feed product-feed thumbnail products">
+      
+         <h2 title="Featured Products">Featured</h2>
+         
+         <ul>
+             <!-- #FOREACH {{ product in products.featured | shuffle | pick(5) }} -->
+             <li class="hproduct product {{product.slug}}">
+      
+                 <a href="{{product.url}}" title="{{product.title | html_encode}}" rel="product">
+                 <!-- #IF {{product.image}} --><span class="product-image"><img src="{{product.image}}?w=60&h=40&crop=true" alt="{{product.excerpt | html_encode}}" class="photo" /></span><!-- #ENDIF -->
+                 <h4 class="product-title">{{product.name | html_encode}}</h4>
+
+                 <p class="price">
+                      <!-- #IF {{product.onsale}} -->
+                      <del><span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.fullprice | money_dollars}}</span><!-- #IF {{product.fullprice | money_cents}} --><span class="cents">.{{product.fullprice | money_cents}}</span><!-- #ENDIF --></del>
+                      <!-- #ENDIF -->
+                      <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.price | money_dollars}}</span><!-- #IF {{product.price | money_cents}} --><span class="cents">.{{product.price | money_cents}}</span><!-- #ENDIF -->
+                 </p> 
+
+                 </a>
+   
+             </li>
+             <!-- #NEXT -->
+        </ul>
+   
+      
+      </section>
+      <!-- #ENDIF -->
+      
+      
+      
+
+     <!-- #IF {{snippets.about}} -->
+
+        <!-- // Snippet: About -->
+        <section class="feed about">
+   
+         <!-- #IF {{store.loggedin}} -->
+            <div class="snippet-edit snippet">
+               <p><a href="/admin/snippets/">Edit Snippet</a> [<em>About</em>]</p>
+            </div>
+         <!-- #ENDIF --> 
+   
+            {{snippets.about}}
+         
+         </section>
+
+      <!-- #ELSE -->
+
+         <!-- #IF {{store.loggedin}} -->
+         <section class="feed about">
+             <div class="snippet-add snippet">
+                 <h3>Add Snippet!</h3>
+                 <p><em><a href="/admin/snippet/new?title=About">Create a new Snippet</a></em> / Title: [ <strong>About</strong> ] with some text information here.</p>
+             </div>
+         </section>
+         <!-- #ENDIF -->
+
+         <!-- #IF {{page.about}} -->
+         <section class="feed about">
+             <h2 title="{{store | html_encode}}">About <!-- #IF {{store.loggedin}} --><a class="store-edit" href="/admin/preferences/store">(Edit)</a><!-- #ENDIF --></h2>
+             <p>{{page.about  | html_encode}}</p>
+         </section>
+         <!-- #ENDIF -->
+
+     <!-- #ENDIF -->
+
+
+
+
+   </div><!-- END | wrap -->
+
+</section>
+<!-- #ENDBLOCK -->
+
+
+
+
+
+<footer role="siteinfo">
+    <div class="wrap">
+
+		<!-- #BLOCK name="footer_area" --><!-- #ENDBLOCK -->
+
+
+        <!-- #IF {{snippets.footer-navigation}} -->
+
+            <!-- #IF {{store.loggedin}} -->
+            <div class="snippet-edit snippet">
+                <h3>Snippet!</h3>
+                <p><em><a href="/admin/snippets/">Edit Snippet</a></em> [<strong>Footer Navigation</strong>]</p>
+            </div>
+            <!-- #ENDIF -->
+    
+            <nav role="footer-nav" class="footer-nav">
+                {{snippets.footer-navigation}}
+            </nav>    
+
+        <!-- #ELSE -->
+        
+	        <!-- #IF {{store.loggedin}} -->
+			<div class="snippet-add snippet">
+                <h3>Add Snippet!</h3>
+	            <p><em><a href="/admin/snippet/new?title=Footer%20Navigation">Create Snippet</a></em>: <strong>Footer Navigation</strong>.</p>
+            </div>
+	        <!-- #ENDIF -->
+
+        <!-- #ENDIF -->
+
+		<!-- #BLOCK name="footer_social" -->
+        <div class="social addthis">
+            <div class="addthis_toolbox addthis_default_style" addthis:url="{{page.url}}" addthis:title="{{page.title | html_encode}}">
+            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+            <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+            <a class="addthis_counter addthis_pill_style"></a>
+            </div>
+        </div>
+		<!-- #ENDBLOCK -->
+
+	    <p class="credits"><small><abbr title="Copyright">&#169;</abbr> All content <a href="{{store.url}}">{{store.name | html_encode}}</a> &mdash; {{now.year}}.</small></p>
+        
+        <!-- <a href="#top">Top &#710;</a> -->
+        <a class="top" href="#top" title="Scroll to top">↑</a>
+
+    </div>
+</footer>
+
+<!-- SCRIPTS -->
+<!--
+	// Shaodow Box - Viewer
+   <link rel="stylesheet" href="http://static.store-cdn.com/themes/library/jquery/shadowbox/shadowbox.css">
+   <script src="http://static.store-cdn.com/themes/library/jquery/shadowbox/shadowbox.js"></script>
+
+	// Breaking Masonary - TO FIX
+	<script src="/themes/metro-extend/files/main.js"></script>
+-->
+<script src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e8387415e31734c"></script>
+
+<!-- #BLOCK name="script_content" --><!-- #ENDBLOCK -->
+<!-- #IF {{snippets.script-content}} -->{{snippets.script-content}}<!-- #ENDIF -->
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!--/
+    CartChing Theme / Metro Extend
+    Copyright (c) CartChing, 2012 | http://cartching.com
+/-->
+
+<!-- #EXTENDS file="theme.html" -->
+
+<!-- #BLOCK for="page_title" -->{{store | html_encode}}<!-- #ENDBLOCK -->
+<!-- #BLOCK for="head_content" --> <!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="content_title" --><!-- #ENDBLOCK -->
+
+<!-- #BLOCK for="content_area" -->
+ 
+       <!-- Blog Posts -->
+       <section class="posts hfeed group" id="main">
+                   
+          <!-- #var {{pagedarticles = blog.articles | paged(40) }} -->
+          <!-- #FOREACH {{ post in pagedarticles }} -->
+          <article class="post hentry box {{post.slug}}">
+              <div class="inner">
+   
+                  <!-- image -->
+                  <!-- #IF {{post.image}} -->
+                  <figure>
+                      <a href="{{post.url}}"><img src="{{post.image}}?w=600&h=600&crop=false" alt="{{post.excerpt | html_encode}}"  title="{{post.excerpt | html_encode}}" class="photo" /></a>
+                  </figure>
+                  <!-- #ENDIF -->
+   
+                  <!-- header -->
+                  <h2 class="entry-title" title="{{post.title | html_encode}}"><a href="{{post.url}}">{{post.title | html_encode}} »</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{post.editurl}}">(Edit)</a><!-- #ENDIF --></h2>
+                  
+                  <!-- text -->
+                  <!-- #IF {{post.excerpt}} -->
+                  <section class="entry-content">
+                      <p>{{post.excerpt | html_encode}}</p>
+                  </section>
+                  <!-- #ENDIF -->
+   
+              </div>
+          </article>
+          <!-- #NEXT -->
+   
+      </section>
+   
+   
+       <!-- #IF {{pagedarticles.pages}} -->
+       <section class="actions paging blog">
+           <nav>
+           <!-- #IF {{pagedarticles.prevpage}} -->
+           <a href="{{pagedarticles.prevpage.url}}" class="page prev">« Previous</a>
+           <!-- #ENDIF -->
+   
+           <!-- #IF {{pagedarticles.nextpage}} -->
+           <a href="{{pagedarticles.nextpage.url}}" class="page next">Next »</a>
+           <!-- #ENDIF -->
+           </nav>
+       </section>
+       <!-- #ENDIF -->
+   
+      
+
+
+<!-- #ENDBLOCK -->
+
+
+<!-- #BLOCK for="aside_area" --><!-- #ENDBLOCK -->
+
+<!-- #BLOCK for="script_content" -->
+
+<script src="/themes/library/jquery/masonry/jquery.masonry.min.js"></script>
+<script>
+	$(document).ready(function(){
+		 var $container = $('.posts');
+	
+		 var gutter = 20;
+		 var min_width = 200;
+		 $container.imagesLoaded( function(){
+			  $container.masonry({
+					itemSelector : '.box',
+					gutterWidth: gutter,
+					isAnimated: true,
+					  columnWidth: function( containerWidth ) {
+						 var box_width = (((containerWidth - 2*gutter)/3) | 0) ;
+	
+						 if (box_width < min_width) {
+							  box_width = (((containerWidth - gutter)/2) | 0);
+						 }
+	
+						 if (box_width < min_width) {
+							  box_width = containerWidth;
+						 }
+	
+						 $('.box').width(box_width);
+	
+						 return box_width;
+					  }
+			  });
+		 });
+	});
+</script>
+
+<!-- #ENDBLOCK -->

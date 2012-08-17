@@ -1,0 +1,155 @@
+<!--/
+    CartChing Theme / Metro Extend
+    Copyright (c) CartChing, 2012 | http://cartching.com
+/-->
+
+<!-- #EXTENDS file="theme.html" -->
+
+
+<!-- #BLOCK for="page_title" -->{{category.name | html_encode}} &mdash; {{store | html_encode}}<!-- #ENDBLOCK -->
+<!-- #BLOCK for="page_description" -->
+<!-- #IF {{category.excerpt}} -->
+    <!-- #var {{ pagedescription = category.excerpt | strip_html | html_encode }} -->
+    <meta name="description" content="{{pagedescription}}">
+    <meta property="og:description" content="{{pagedescription}}">
+<!-- #ELSE -->
+    <!-- #IF {{page.description}} -->
+    <!-- #var {{ pagedescription = page.description | strip_html | html_encode }} -->
+    <meta name="description" content="{{pagedescription}}">
+    <meta property="og:description" content="{{pagedescription}}">
+    <!-- #ENDIF -->
+<!-- #ENDIF -->
+<!-- #ENDBLOCK -->
+<!-- #BLOCK for="page_image" --><!-- #ENDBLOCK -->
+<!-- #BLOCK for="page_type" --><meta property="og:type" content="product"><!-- #ENDBLOCK -->
+<!-- #BLOCK for="head_content" --><!-- #ENDBLOCK -->
+
+<!-- #BLOCK for="content_title" --> <!-- #ENDBLOCK -->
+
+<!-- #BLOCK for="content_area" -->
+
+
+	<div class="hasaside">
+   
+   
+		<div class="main">
+
+
+         <header role="page-title">
+             <h1 title="{{page.title | html_encode}}">{{page.title | html_encode}} <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{category.editurl}}">(Edit)</a><!-- #ENDIF --></h1>
+         
+             <!-- #IF {{category.description}} -->
+             <section class="category-description html">{{category.description}}</section>
+             <!-- #ENDIF -->
+
+         </header>
+
+
+          <!-- Products -->
+          <!-- #IF {{category.products}} -->
+          <!-- #var {{ pagedProducts = category.products | paged(6) }} -->
+      
+              <section class="products group masonry" id="main">
+          
+                   <!-- #FOREACH {{product in pagedProducts }} -->
+                   <article class="hproduct product box {{product.slug}}">
+      
+                      <div class="inner">
+                   
+                           <!-- #IF {{product.image}} -->
+                           <figure>
+                               <a href="{{product.url}}" rel="product"><img src="{{product.image}}?w=600&h=440&crop=true" alt="{{product.excerpt | html_encode}}" class="photo" /></a>
+                           </figure>
+                           <!-- #ENDIF -->
+                           
+                           <section class="product-details">
+
+                              <h1 class="product-title"><a href="{{product.url}}">{{product.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{product.editurl}}">(Edit)</a><!-- #ENDIF --></h1>               
+                               <p class="price">
+                                   <!-- #IF {{product.onsale}} -->
+                                   <del><span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.fullprice | money_dollars}}</span><!-- #IF {{product.fullprice | money_cents}} --><span class="cents">.{{product.fullprice | money_cents}}</span><!-- #ENDIF --></del>
+                                   <!-- #ENDIF -->
+                                   <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.price | money_dollars}}</span><!-- #IF {{product.price | money_cents}} --><span class="cents">.{{product.price | money_cents}}</span><!-- #ENDIF -->
+                               </p>
+                   
+                           </section>
+      
+                     </div>
+                       
+                   </article>
+                   <!-- #NEXT -->
+       
+              </section>
+          
+              
+              <!-- paging -->
+              <!-- #IF {{pagedproducts.pages}} -->
+              <section class="actions paging category">
+              
+                  <nav>{{ pagedProducts | pager }}</nav>
+              
+              </section>
+              <!-- #ENDIF -->
+ 
+ 
+         <!-- #ENDIF -->
+
+
+		</div><!-- END | main -->
+
+
+		<aside class="aside">
+
+         <!-- #include file="aside.include.html" -->
+      
+      </aside>
+
+   
+   </div><!-- END | hasaside -->
+
+
+
+<!-- #ENDBLOCK -->
+
+
+
+
+
+
+
+
+<!-- #BLOCK for="script_content" -->
+
+<script src="/themes/library/jquery/masonry/jquery.masonry.min.js"></script>
+<script>
+	$(document).ready(function(){
+		 var $container = $('.masonry');
+	
+		 var gutter = 20;
+		 var min_width = 200;
+		 $container.imagesLoaded( function(){
+			  $container.masonry({
+					itemSelector : '.box',
+					gutterWidth: gutter,
+					isAnimated: true,
+					  columnWidth: function( containerWidth ) {
+						 var box_width = (((containerWidth - 2*gutter)/3) | 0) ;
+	
+						 if (box_width < min_width) {
+							  box_width = (((containerWidth - gutter)/2) | 0);
+						 }
+	
+						 if (box_width < min_width) {
+							  box_width = containerWidth;
+						 }
+	
+						 $('.box').width(box_width);
+	
+						 return box_width;
+					  }
+			  });
+		 });
+	});
+</script>
+
+<!-- #ENDBLOCK -->
